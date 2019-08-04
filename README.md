@@ -20,6 +20,6 @@ npm start
 ```
 
 
-##Heads Up
+## Heads Up
 Its personal level excercise, I tried to use vanilla to show values on Browser in a very weired manner.
 Just use it for inspiration, all methods and examples are not recommended for production.
