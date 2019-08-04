@@ -1,5 +1,5 @@
 # Functional Programming Practice
-This repository includes array, collection, object and other example manupulations using functional programming practices. Most of the excercises were mentioned [here]https://gist.github.com/oskarkv/3168ea3f8d7530ccd94c97c19aafe266
+This repository includes array, collection, object and other example manupulations using functional programming practices. Most of the excercises were mentioned [here](https://gist.github.com/oskarkv/3168ea3f8d7530ccd94c97c19aafe266)
 
 ## Getting Started
 To clone this repository
