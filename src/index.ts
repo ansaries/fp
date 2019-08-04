@@ -1,10 +1,10 @@
-import {zip, zipWith, transpose, take, range, interleave, zipDic, zipMap} from './collections';
-import { sub, add, mul, div, negate, double, isEven, isPositive, allOk, frequencies, addArgs, subArgs, negateArgs, doubleArgs} from './arithmatics';
-import {clist} from './clist';
-import {compose, flow} from './compose_flow';
-import {update, update_in} from './crud';
-import { merge_with } from './objects';
-import "./array";
+import {zip, zipWith, transpose, take, range, interleave, zipDic, zipMap} from './lib/collections';
+import { sub, add, mul, div, negate, double, isEven, isPositive, allOk, frequencies, addArgs, subArgs, negateArgs, doubleArgs} from './lib/arithmatics';
+import {clist} from './lib/clist';
+import {compose, flow} from './lib/compose_flow';
+import {update, update_in} from './lib/crud';
+import { merge_with } from './lib/objects';
+import "./lib/array";
 import { noPrimeItems, cart, primeItems, techItemDiscount, clothingItemDiscount, applyDiscount, applyTax, getTax } from './examples/cart';
 
 const mlist = {

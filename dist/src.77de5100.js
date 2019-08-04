@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"collections.ts":[function(require,module,exports) {
+})({"lib/collections.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -325,7 +325,7 @@ function zipMap(left, right, mapFn) {
 }
 
 exports.zipMap = zipMap;
-},{}],"arithmatics.ts":[function(require,module,exports) {
+},{}],"lib/arithmatics.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -474,7 +474,7 @@ var submemo = memoize(exports.sub); // summemo(4,6);
 // submemo(4,6);
 // summemo(4,6);
 // submemo(4,6);
-},{}],"clist.ts":[function(require,module,exports) {
+},{}],"lib/clist.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -490,7 +490,7 @@ function clist() {
 }
 
 exports.clist = clist;
-},{}],"compose_flow.ts":[function(require,module,exports) {
+},{}],"lib/compose_flow.ts":[function(require,module,exports) {
 "use strict";
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -558,7 +558,7 @@ function flow() {
 }
 
 exports.flow = flow;
-},{}],"crud.ts":[function(require,module,exports) {
+},{}],"lib/crud.ts":[function(require,module,exports) {
 "use strict";
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -592,7 +592,7 @@ exports.update_in = function (obj, map, fn, val) {
 }; // bob = {"name": "bob", "hp": 3}
 // add 2 to to hp property of bob
 // console.log(update(bob, "hp", add, 2));
-},{}],"objects.ts":[function(require,module,exports) {
+},{}],"lib/objects.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -625,7 +625,7 @@ function merge_with(fn) {
 }
 
 exports.merge_with = merge_with;
-},{}],"array.ts":[function(require,module,exports) {
+},{}],"lib/array.ts":[function(require,module,exports) {
 "use strict";
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -697,14 +697,14 @@ Array.prototype.reject = function (mapFn) {
     return p;
   }, []); // return this.filter(x => !mapFn(x));
 };
-},{"./collections":"collections.ts"}],"examples/cart.ts":[function(require,module,exports) {
+},{"./collections":"lib/collections.ts"}],"examples/cart.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var arithmatics_1 = require("../arithmatics");
+var arithmatics_1 = require("../lib/arithmatics");
 /*
 The cart is an array of objects like this:
 */
@@ -747,6 +747,14 @@ function noPrimeItems(cart) {
 }
 
 exports.noPrimeItems = noPrimeItems;
+/**
+ * Cart Manupulation is a good example of Partial Apply
+ *
+ * @export
+ * @param {number} discount
+ * @param {Function} fn
+ * @returns
+ */
 
 function applyDiscount(discount, fn) {
   return function (prop, value) {
@@ -781,26 +789,26 @@ function getTax(percent) {
 }
 
 exports.getTax = getTax;
-},{"../arithmatics":"arithmatics.ts"}],"index.ts":[function(require,module,exports) {
+},{"../lib/arithmatics":"lib/arithmatics.ts"}],"index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var collections_1 = require("./collections");
+var collections_1 = require("./lib/collections");
 
-var arithmatics_1 = require("./arithmatics");
+var arithmatics_1 = require("./lib/arithmatics");
 
-var clist_1 = require("./clist");
+var clist_1 = require("./lib/clist");
 
-var compose_flow_1 = require("./compose_flow");
+var compose_flow_1 = require("./lib/compose_flow");
 
-var crud_1 = require("./crud");
+var crud_1 = require("./lib/crud");
 
-var objects_1 = require("./objects");
+var objects_1 = require("./lib/objects");
 
-require("./array");
+require("./lib/array");
 
 var cart_1 = require("./examples/cart");
 
@@ -920,7 +928,7 @@ Print('VAT Tax -- ', compose_flow_1.flow(VAT, Math.round)(subTotal));
 Print('GST Tax -- ', compose_flow_1.flow(GST, Math.round)(subTotal));
 Print('Total Discount -- ', compose_flow_1.flow(Math.round)(discountTotal));
 Print('<strong style="font-size:20px"> Total -- ', compose_flow_1.flow(arithmatics_1.addArgs, Math.round)(subTotal, VAT(subTotal), GST(subTotal)), '</strong>');
-},{"./collections":"collections.ts","./arithmatics":"arithmatics.ts","./clist":"clist.ts","./compose_flow":"compose_flow.ts","./crud":"crud.ts","./objects":"objects.ts","./array":"array.ts","./examples/cart":"examples/cart.ts"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./lib/collections":"lib/collections.ts","./lib/arithmatics":"lib/arithmatics.ts","./lib/clist":"lib/clist.ts","./lib/compose_flow":"lib/compose_flow.ts","./lib/crud":"lib/crud.ts","./lib/objects":"lib/objects.ts","./lib/array":"lib/array.ts","./examples/cart":"examples/cart.ts"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -948,7 +956,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62853" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54754" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

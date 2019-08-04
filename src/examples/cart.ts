@@ -1,4 +1,4 @@
-import { mul, sub } from "../arithmatics";
+import { mul, sub } from "../lib/arithmatics";
 
 /*
 The cart is an array of objects like this:
@@ -22,6 +22,14 @@ export function noPrimeItems(cart: Array<any>) {
     return cart.reject(isPrime);
 }
 
+/**
+ * Cart Manupulation is a good example of Partial Apply
+ *
+ * @export
+ * @param {number} discount
+ * @param {Function} fn
+ * @returns
+ */
 export function applyDiscount(discount: number, fn: Function) {
     return (prop, value) => 
                 (cart: Array<any>) => 
@@ -39,3 +47,4 @@ export function applyTax(percent) {
 export function getTax(percent) {
     return (x) => x*percent/100;
 }
+
