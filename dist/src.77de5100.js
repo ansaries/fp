@@ -280,6 +280,16 @@ function zipWith(fn) {
 }
 
 exports.zipWith = zipWith;
+
+function zipMapWith(arr) {
+  return function (fn, initialValue) {
+    return arr.reduce(function (p, c) {
+      return fn(p, c);
+    }, initialValue);
+  };
+}
+
+exports.zipMapWith = zipMapWith;
 /**
  * Creates an object from two arrays
  * e.g: zipDic([a,b,c],[1,2,3]) => {a:1, b:2, c:3}
@@ -789,6 +799,12 @@ function getTax(percent) {
 }
 
 exports.getTax = getTax;
+
+function sumOfPrice(x, y) {
+  return x + y.price;
+}
+
+exports.sumOfPrice = sumOfPrice;
 },{"../lib/arithmatics":"lib/arithmatics.ts"}],"index.ts":[function(require,module,exports) {
 "use strict";
 
@@ -890,9 +906,7 @@ Print(h2('Prime'), cart_1.primeItems(cart_1.cart));
 Print(h2('Original Cart => '), '<strong>', JSON.stringify(cart_1.cart), '</strong>');
 var VAT = cart_1.getTax(5);
 var GST = cart_1.getTax(17);
-var subTotal = cart_1.cart.reduce(function (p, c) {
-  return p + c.price;
-}, 0);
+var subTotal = collections_1.zipMapWith(cart_1.cart)(cart_1.sumOfPrice, 0);
 Print('<strong>Sub Total -- ', compose_flow_1.flow(Math.round)(subTotal), '</strong>');
 Print('VAT Tax -- ', compose_flow_1.flow(VAT, Math.round)(subTotal));
 Print('GST Tax -- ', compose_flow_1.flow(GST, Math.round)(subTotal));
@@ -919,9 +933,7 @@ GST = cart_1.getTax(17);
 var discountTotal = subTotal - updatedCart.reduce(function (p, c) {
   return p + c.price;
 }, 0);
-subTotal = updatedCart.reduce(function (p, c) {
-  return p + c.price;
-}, 0);
+subTotal = collections_1.zipMapWith(updatedCart)(cart_1.sumOfPrice, 0);
 Print(h3('Discounted Cart as per coupon'), updatedCart);
 Print('<strong>Sub Total -- ', compose_flow_1.flow(Math.round)(subTotal), '</strong>');
 Print('VAT Tax -- ', compose_flow_1.flow(VAT, Math.round)(subTotal));

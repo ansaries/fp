@@ -48,3 +48,6 @@ export function getTax(percent) {
     return (x) => x*percent/100;
 }
 
+export function sumOfPrice(x : number, y: any) {
+    return x+y.price;
+}

@@ -1,11 +1,11 @@
-import {zip, zipWith, transpose, take, range, interleave, zipDic, zipMap} from './lib/collections';
+import {zip, zipWith, transpose, take, range, interleave, zipDic, zipMap, zipMapWith} from './lib/collections';
 import { sub, add, mul, div, negate, double, isEven, isPositive, allOk, frequencies, addArgs, subArgs, negateArgs, doubleArgs} from './lib/arithmatics';
 import {clist} from './lib/clist';
 import {compose, flow} from './lib/compose_flow';
 import {update, update_in} from './lib/crud';
 import { merge_with } from './lib/objects';
 import "./lib/array";
-import { noPrimeItems, cart, primeItems, techItemDiscount, clothingItemDiscount, applyDiscount, applyTax, getTax } from './examples/cart';
+import { noPrimeItems, cart, primeItems, techItemDiscount, clothingItemDiscount, applyDiscount, applyTax, getTax, sumOfPrice } from './examples/cart';
 
 const mlist = {
     1: clist,
@@ -64,7 +64,7 @@ Print(h2('Original Cart => '), '<strong>', JSON.stringify(cart), '</strong>');
 let VAT = getTax(5);
 let GST = getTax(17);
 
-let subTotal = cart.reduce((p,c) => p+c.price,0);
+let subTotal = zipMapWith(cart)(sumOfPrice,0);
 
 Print('<strong>Sub Total -- ', flow(Math.round)(subTotal), '</strong>');
 Print('VAT Tax -- ', flow(VAT, Math.round)(subTotal));
@@ -90,7 +90,7 @@ const updatedCart: Array<any> = coupon.items.reduce((p,c) =>
 VAT = getTax(5);
 GST = getTax(17);
 const discountTotal = subTotal - updatedCart.reduce((p,c) => p+c.price,0); 
-subTotal = updatedCart.reduce((p,c) => p+c.price,0);
+subTotal = zipMapWith(updatedCart)(sumOfPrice,0);
 
 Print(h3('Discounted Cart as per coupon'), updatedCart);
 Print('<strong>Sub Total -- ', flow(Math.round)(subTotal), '</strong>');
