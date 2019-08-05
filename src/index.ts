@@ -64,13 +64,14 @@ Print(h2('Original Cart => '), '<strong>', JSON.stringify(cart), '</strong>');
 let VAT = getTax(5);
 let GST = getTax(17);
 
-let subTotal = zipMapWith(cart)(sumOfPrice,0);
+const subTotal = zipMapWith(sumOfPrice,0);
+let subTotalCart = subTotal(cart);
 
-Print('<strong>Sub Total -- ', flow(Math.round)(subTotal), '</strong>');
-Print('VAT Tax -- ', flow(VAT, Math.round)(subTotal));
-Print('GST Tax -- ', flow(GST, Math.round)(subTotal));
+Print('<strong>Sub Total -- ', flow(Math.round)(subTotalCart), '</strong>');
+Print('VAT Tax -- ', flow(VAT, Math.round)(subTotalCart));
+Print('GST Tax -- ', flow(GST, Math.round)(subTotalCart));
 Print('<strong style="font-size:20px"> Total -- ', 
-    flow(addArgs, Math.round)(subTotal, VAT(subTotal), GST(subTotal)),
+    flow(addArgs, Math.round)(subTotalCart, VAT(subTotalCart), GST(subTotalCart)),
     '</strong>'
 );
 // Print(h3('Category Tech Discounted by 10%'), techItemDiscount(cart));
@@ -89,15 +90,15 @@ const updatedCart: Array<any> = coupon.items.reduce((p,c) =>
 ,cart);
 VAT = getTax(5);
 GST = getTax(17);
-const discountTotal = subTotal - updatedCart.reduce((p,c) => p+c.price,0); 
-subTotal = zipMapWith(updatedCart)(sumOfPrice,0);
+const subTotalDiscountedCart = subTotal(updatedCart);
+const discountTotal = subTotalCart - subTotalDiscountedCart; 
 
 Print(h3('Discounted Cart as per coupon'), updatedCart);
-Print('<strong>Sub Total -- ', flow(Math.round)(subTotal), '</strong>');
-Print('VAT Tax -- ', flow(VAT, Math.round)(subTotal));
-Print('GST Tax -- ', flow(GST, Math.round)(subTotal));
+Print('<strong>Sub Total -- ', flow(Math.round)(subTotalDiscountedCart), '</strong>');
+Print('VAT Tax -- ', flow(VAT, Math.round)(subTotalDiscountedCart));
+Print('GST Tax -- ', flow(GST, Math.round)(subTotalDiscountedCart));
 Print('Total Discount -- ', flow(Math.round)(discountTotal));
 Print('<strong style="font-size:20px"> Total -- ', 
-    flow(addArgs, Math.round)(subTotal, VAT(subTotal), GST(subTotal)),
+    flow(addArgs, Math.round)(subTotalDiscountedCart, VAT(subTotalDiscountedCart), GST(subTotalDiscountedCart)),
     '</strong>'
 );

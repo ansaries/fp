@@ -115,8 +115,8 @@ export function zipWith (fn:(x: any,y: any) => any) {
     return (...args) => args.reduce((p, c) => (p.length <= 0) ? c : p.map((x, i) => fn(x, c[i])), []);
 }
 
-export function zipMapWith (arr: Array<Object>): any {
-    return (fn: (x:any,y:any) => any, initialValue):any => 
+export function zipMapWith (fn: (x:any,y:any) => any, initialValue): any {
+    return (arr: Array<Object>):any => 
     arr.reduce((p, c) => fn(p,c), initialValue);
 }
 

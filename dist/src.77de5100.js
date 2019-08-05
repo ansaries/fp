@@ -281,8 +281,8 @@ function zipWith(fn) {
 
 exports.zipWith = zipWith;
 
-function zipMapWith(arr) {
-  return function (fn, initialValue) {
+function zipMapWith(fn, initialValue) {
+  return function (arr) {
     return arr.reduce(function (p, c) {
       return fn(p, c);
     }, initialValue);
@@ -906,11 +906,12 @@ Print(h2('Prime'), cart_1.primeItems(cart_1.cart));
 Print(h2('Original Cart => '), '<strong>', JSON.stringify(cart_1.cart), '</strong>');
 var VAT = cart_1.getTax(5);
 var GST = cart_1.getTax(17);
-var subTotal = collections_1.zipMapWith(cart_1.cart)(cart_1.sumOfPrice, 0);
-Print('<strong>Sub Total -- ', compose_flow_1.flow(Math.round)(subTotal), '</strong>');
-Print('VAT Tax -- ', compose_flow_1.flow(VAT, Math.round)(subTotal));
-Print('GST Tax -- ', compose_flow_1.flow(GST, Math.round)(subTotal));
-Print('<strong style="font-size:20px"> Total -- ', compose_flow_1.flow(arithmatics_1.addArgs, Math.round)(subTotal, VAT(subTotal), GST(subTotal)), '</strong>'); // Print(h3('Category Tech Discounted by 10%'), techItemDiscount(cart));
+var subTotal = collections_1.zipMapWith(cart_1.sumOfPrice, 0);
+var subTotalCart = subTotal(cart_1.cart);
+Print('<strong>Sub Total -- ', compose_flow_1.flow(Math.round)(subTotalCart), '</strong>');
+Print('VAT Tax -- ', compose_flow_1.flow(VAT, Math.round)(subTotalCart));
+Print('GST Tax -- ', compose_flow_1.flow(GST, Math.round)(subTotalCart));
+Print('<strong style="font-size:20px"> Total -- ', compose_flow_1.flow(arithmatics_1.addArgs, Math.round)(subTotalCart, VAT(subTotalCart), GST(subTotalCart)), '</strong>'); // Print(h3('Category Tech Discounted by 10%'), techItemDiscount(cart));
 // Print(h3('Prime Discounted by 10%'), clothingItemDiscount(cart));
 
 exports.coupon = {
@@ -930,16 +931,14 @@ var updatedCart = exports.coupon.items.reduce(function (p, c) {
 }, cart_1.cart);
 VAT = cart_1.getTax(5);
 GST = cart_1.getTax(17);
-var discountTotal = subTotal - updatedCart.reduce(function (p, c) {
-  return p + c.price;
-}, 0);
-subTotal = collections_1.zipMapWith(updatedCart)(cart_1.sumOfPrice, 0);
+var subTotalDiscountedCart = subTotal(updatedCart);
+var discountTotal = subTotalCart - subTotalDiscountedCart;
 Print(h3('Discounted Cart as per coupon'), updatedCart);
-Print('<strong>Sub Total -- ', compose_flow_1.flow(Math.round)(subTotal), '</strong>');
-Print('VAT Tax -- ', compose_flow_1.flow(VAT, Math.round)(subTotal));
-Print('GST Tax -- ', compose_flow_1.flow(GST, Math.round)(subTotal));
+Print('<strong>Sub Total -- ', compose_flow_1.flow(Math.round)(subTotalDiscountedCart), '</strong>');
+Print('VAT Tax -- ', compose_flow_1.flow(VAT, Math.round)(subTotalDiscountedCart));
+Print('GST Tax -- ', compose_flow_1.flow(GST, Math.round)(subTotalDiscountedCart));
 Print('Total Discount -- ', compose_flow_1.flow(Math.round)(discountTotal));
-Print('<strong style="font-size:20px"> Total -- ', compose_flow_1.flow(arithmatics_1.addArgs, Math.round)(subTotal, VAT(subTotal), GST(subTotal)), '</strong>');
+Print('<strong style="font-size:20px"> Total -- ', compose_flow_1.flow(arithmatics_1.addArgs, Math.round)(subTotalDiscountedCart, VAT(subTotalDiscountedCart), GST(subTotalDiscountedCart)), '</strong>');
 },{"./lib/collections":"lib/collections.ts","./lib/arithmatics":"lib/arithmatics.ts","./lib/clist":"lib/clist.ts","./lib/compose_flow":"lib/compose_flow.ts","./lib/crud":"lib/crud.ts","./lib/objects":"lib/objects.ts","./lib/array":"lib/array.ts","./examples/cart":"examples/cart.ts"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
