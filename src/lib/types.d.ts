@@ -29,8 +29,8 @@ interface Array<T> {
 
     /**
      * Transpose multi dimensional array
-     * e.g: [[1,2,3], [4,5,6], [7,8,9]] => [[1,4,7],[2,5,8],[3,6,9]]
-     * or e.g: [[1, 2, 3], [4, 5, 6]].zip() => [[1, 4], [2, 5], [3, 6]]
+     * @example[[1,2,3], [4,5,6], [7,8,9]] => [[1,4,7],[2,5,8],[3,6,9]]
+     * or @example[[1, 2, 3], [4, 5, 6]].zip() => [[1, 4], [2, 5], [3, 6]]
      * @template T
      * @returns {Array<T>}
      * @memberof Array
@@ -49,7 +49,7 @@ interface Array<T> {
 
     /**
      * Converts a multi-dimensional array into single mapped array
-     * e.g: [[1,2,3], [4,5,6]].zipWith(add);
+     * @example[[1,2,3], [4,5,6]].zipWith(add);
      * would do [[1,2,3], [4,5,6]] => [[5,7,9]] 
      * @template T
      * @param {(x: any,y: any) => any} fn Takes two argument x: elem of previous array y: elem of next array
@@ -69,7 +69,7 @@ interface Array<T> {
 
     /**
      * Flattens a multi-dimensional array of any depth
-     * e.g: [[1],[[[2]],[[[[[3]]]]]].flatten() => [1,2,3,4]
+     * @example[[1],[[[2]],[[[[[3]]]]]].flatten() => [1,2,3,4]
      * @template T
      * @param {*} initial
      * @returns {Array<T>}

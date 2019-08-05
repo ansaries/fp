@@ -4,11 +4,20 @@
   "description": "Functional Programming Practices and Utilities",
   "main": "index.js",
   "scripts": {
-    "start": "parcel ./src/index.html"
+    "start": "parcel ./src/index.html",
+    "build:doc": "jsdoc2md --template main.hbs --files ./src/lib/*.ts --configure ./jsdoc2md.json > ./README.md"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "jsdoc-babel": "^0.5.0",
+    "jsdoc-to-markdown": "^5.0.0",
     "typescript": "^3.5.3"
   }
 }
