@@ -1,6 +1,6 @@
 {
     "source": {
-      "includePattern": ".+\\.ts(doc|x)?$",
+      "includePattern": ".*\\.ts(doc|x)?$",
       "excludePattern": ".+\\.(test|spec).ts"
     },
     "plugins": [
@@ -13,15 +13,6 @@
       "babelrc": false,
       "presets": [["@babel/preset-env", { "targets": { "node": true } }], "@babel/preset-typescript"],
       "plugins": ["@babel/proposal-class-properties", "@babel/proposal-object-rest-spread"]
-    },
-    "opts": {
-      "encoding": "utf8",
-      "lenient": false,
-      "sort": true
-    },
-    "templates": {
-      "cleverLinks": false,
-      "monospaceLinks": false,
-      "sort": true
     }
+    
   }

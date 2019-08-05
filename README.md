@@ -23,6 +23,32 @@ npm start
 ## Functions
 
 <dl>
+<dt><a href="#merge_with">merge_with(fn)</a> ⇒ <code>Object</code></dt>
+<dd><p>Merges Multiple Objects into one final Object with applied maping method</p></dd>
+<dt><a href="#memoize">memoize(fn)</a> ⇒ <code>function</code></dt>
+<dd><p>Memoize a funtion based on its arguments</p></dd>
+<dt><a href="#compose">compose(...fns)</a> ⇒ <code>function</code></dt>
+<dd><p>Compose pipes all methods from right to left
+The return value of last(right) method will be injected
+into the arguments of next(left) method.</p></dd>
+<dt><a href="#flow">flow(...fns)</a> ⇒ <code>function</code></dt>
+<dd><p>Flow pipes all methods from left to right
+The return value of first(left) method will be injected
+into the arguments of next(right) method.</p></dd>
+<dt><a href="#pushItem">pushItem(...args)</a> ⇒ <code>Array.&lt;any&gt;</code></dt>
+<dd><p>Pushes an Item in Array and returns the Array with the new Item</p></dd>
+<dt><a href="#concatAll">concatAll()</a> ⇒ <code>Array.&lt;T&gt;</code></dt>
+<dd><p>Concat all arrays</p></dd>
+<dt><a href="#concatMap">concatMap(fn)</a> ⇒ <code>Array.&lt;T&gt;</code></dt>
+<dd><p>Concat all arrays while applying a Map function on each element of each array</p></dd>
+<dt><a href="#flip">flip()</a> ⇒ <code>Array.&lt;T&gt;</code></dt>
+<dd><p>Revese the array</p></dd>
+<dt><a href="#flatten">flatten(initial)</a> ⇒ <code>Array.&lt;T&gt;</code></dt>
+<dd><p>Flattens a multi-dimensional array of any depth</p></dd>
+<dt><a href="#insert">insert(item, i)</a> ⇒ <code>Array.&lt;T&gt;</code></dt>
+<dd><p>Insert an item on a specified location and shift all of the rest to right.</p></dd>
+<dt><a href="#reject">reject(mapFn)</a></dt>
+<dd><p>Returns items that does not full fill the filterFn</p></dd>
 <dt><a href="#clist">clist(...args)</a> ⇒ <code>Array.&lt;any&gt;</code></dt>
 <dd><p>Converts arguments to array</p></dd>
 <dt><a href="#take">take(x, ar)</a> ⇒ <code>Array.&lt;T&gt;</code></dt>
@@ -51,25 +77,165 @@ and then concating or flattening it.</p></dd>
 <dd><p>Creates an object from two arrays</p></dd>
 <dt><a href="#zipMap">zipMap(left, right, mapFn)</a> ⇒ <code>Array.&lt;(Object|any)&gt;</code></dt>
 <dd><p>Zips two arrays and maps out the output using the mapFn</p></dd>
-<dt><a href="#compose">compose(...fns)</a> ⇒ <code>function</code></dt>
-<dd><p>Compose pipes all methods from right to left
-The return value of last(right) method will be injected
-into the arguments of next(left) method.</p></dd>
-<dt><a href="#flow">flow(...fns)</a> ⇒ <code>function</code></dt>
-<dd><p>Flow pipes all methods from left to right
-The return value of first(left) method will be injected
-into the arguments of next(right) method.</p></dd>
 <dt><a href="#update">update(obj, prop, mapFn, val)</a> ⇒ <code>T</code></dt>
 <dd><p>Updates a particular propery of an object using the mapFn function</p></dd>
 <dt><a href="#update_in">update_in(obj, propMap, mapFn, val)</a> ⇒ <code>T</code></dt>
 <dd><p>Updates a particular property in a deep object tree using a map of keys and a map function.</p></dd>
-<dt><a href="#merge_with">merge_with(fn)</a> ⇒ <code>Object</code></dt>
-<dd><p>Merges Multiple Objects into one final Object with applied maping method</p></dd>
-<dt><a href="#memoize">memoize(fn)</a> ⇒ <code>function</code></dt>
-<dd><p>Memoize a funtion based on its arguments</p></dd>
 </dl>
 
 ## API Description
+<a name="merge_with"></a>
+
+## merge\_with(fn) ⇒ <code>Object</code>
+<p>Merges Multiple Objects into one final Object with applied maping method</p>
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| fn | <code>function</code> | 
+
+**Example**  
+```js
+merge_with(add, {"a": 1, "b": 2}, {"b": 2}) => {"a": 1, "b": 4}
+```
+**Example**  
+```js
+merge_with(sub, {"a": 1, "b": 2}, {"b": 2}) => {"a": 1, "b": 0}// Similar to zipWith() for arrays
+```
+<a name="memoize"></a>
+
+## memoize(fn) ⇒ <code>function</code>
+<p>Memoize a funtion based on its arguments</p>
+
+**Kind**: global function  
+**Summary**: <p>Memoization requires that the passed function should be a pure-function</p>  
+**Returns**: <code>function</code> - <p>return a reusable function</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fn | <code>function</code> | <p>Pure Function</p> |
+
+**Example**  
+```js
+const summemo = memoize(add);const submemo = memoize(sub);summemo(4,6); // Computes 4 + 6 => 10submemo(4,6); // Computes 4 - 6 => -2summemo(4,6); // Does not compute, rather return from cash => 10submemo(4,6); // Does not compute, rather return from cash => -2
+```
+<a name="compose"></a>
+
+## compose(...fns) ⇒ <code>function</code>
+<p>Compose pipes all methods from right to left
+The return value of last(right) method will be injected
+into the arguments of next(left) method.</p>
+
+**Kind**: global function  
+**Returns**: <code>function</code> - <p>Returns a function which takes any argument</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...fns | <code>Array.&lt;function()&gt;</code> | <p>one or more functions as arguments to apply composedly</p> |
+
+**Example**  
+```js
+// Suppose you want to get Grand Total of a cart after Tax and Discount.var getGrandTotal = compose(Math.round, add);// grandTotal = subTotalCart + Vat + Gst - Discountvar grandTotal = getGrandTotal(subTotalCart, VAT(subTotalCart), GST(subTotalCart),negative(Discount(subTotalCart)));// Suppose for no EU customer the Vat does not applyvar nonUsGrandTotal = getGrandTotal(subTotalCart, GST(subTotalCart),negative(Discount(subTotalCart)))
+```
+<a name="flow"></a>
+
+## flow(...fns) ⇒ <code>function</code>
+<p>Flow pipes all methods from left to right
+The return value of first(left) method will be injected
+into the arguments of next(right) method.</p>
+
+**Kind**: global function  
+**Returns**: <code>function</code> - <p>Returns a function which takes any argument</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...fns | <code>Array.&lt;function()&gt;</code> | <p>one or more functions as arguments to apply composedly</p> |
+
+**Example**  
+```js
+// Suppose you want to get Grand Total of a cart after Tax and Discount.var getGrandTotal = flow(add, Math.round);// grandTotal = subTotalCart + Vat + Gst - Discountvar grandTotal = getGrandTotal(subTotalCart, VAT(subTotalCart), GST(subTotalCart),negative(Discount(subTotalCart)));// Suppose for no EU customer the Vat does not applyvar nonUsGrandTotal = getGrandTotal(subTotalCart, GST(subTotalCart),negative(Discount(subTotalCart)))
+```
+<a name="pushItem"></a>
+
+## pushItem(...args) ⇒ <code>Array.&lt;any&gt;</code>
+<p>Pushes an Item in Array and returns the Array with the new Item</p>
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| ...args | <code>\*</code> | 
+
+<a name="concatAll"></a>
+
+## concatAll() ⇒ <code>Array.&lt;T&gt;</code>
+<p>Concat all arrays</p>
+
+**Kind**: global function  
+<a name="concatMap"></a>
+
+## concatMap(fn) ⇒ <code>Array.&lt;T&gt;</code>
+<p>Concat all arrays while applying a Map function on each element of each array</p>
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| fn | <code>function</code> | 
+
+**Example**  
+```js
+[[1,2,3],[4,5],[6]].concatMap(add); // => [1,3,5,7,9,11]
+```
+<a name="flip"></a>
+
+## flip() ⇒ <code>Array.&lt;T&gt;</code>
+<p>Revese the array</p>
+
+**Kind**: global function  
+<a name="flatten"></a>
+
+## flatten(initial) ⇒ <code>Array.&lt;T&gt;</code>
+<p>Flattens a multi-dimensional array of any depth</p>
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| initial | <code>\*</code> | 
+
+**Example**  
+```js
+[[1],[[[2]],[[[[[3]]]]]].flatten(); // => [1,2,3,4]
+```
+<a name="insert"></a>
+
+## insert(item, i) ⇒ <code>Array.&lt;T&gt;</code>
+<p>Insert an item on a specified location and shift all of the rest to right.</p>
+
+**Kind**: global function  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| item | <code>T</code> |  | 
+| i | <code>number</code> | <code>0</code> | 
+
+**Example**  
+```js
+[1,3,4,5,6].insert(2,1) => [1,2,3,4,5,6]
+```
+<a name="reject"></a>
+
+## reject(mapFn)
+<p>Returns items that does not full fill the filterFn</p>
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| mapFn | <code>function</code> | <p>(x: any, i: number) =&gt; Array<T></p> |
+
 <a name="clist"></a>
 
 ## clist(...args) ⇒ <code>Array.&lt;any&gt;</code>
@@ -263,42 +429,6 @@ var getTotals = zipWith(add)var subTotal = getTotals([1,2,3], [4,5,6], [7,8,9])
 ```js
 // Zips two arrays to array of objects depending on map function.zip([1,2,3],[4,5,6], (x,y,i) => ({a:x, b:y}); => [{a:1, b:4},{a:2, b:5},{a:3, b:6}]
 ```
-<a name="compose"></a>
-
-## compose(...fns) ⇒ <code>function</code>
-<p>Compose pipes all methods from right to left
-The return value of last(right) method will be injected
-into the arguments of next(left) method.</p>
-
-**Kind**: global function  
-**Returns**: <code>function</code> - <p>Returns a function which takes any argument</p>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| ...fns | <code>Array.&lt;function()&gt;</code> | <p>one or more functions as arguments to apply composedly</p> |
-
-**Example**  
-```js
-// Suppose you want to get Grand Total of a cart after Tax and Discount.var getGrandTotal = compose(Math.round, add);// grandTotal = subTotalCart + Vat + Gst - Discountvar grandTotal = getGrandTotal(subTotalCart, VAT(subTotalCart), GST(subTotalCart),negative(Discount(subTotalCart)));// Suppose for no EU customer the Vat does not applyvar nonUsGrandTotal = getGrandTotal(subTotalCart, GST(subTotalCart),negative(Discount(subTotalCart)))
-```
-<a name="flow"></a>
-
-## flow(...fns) ⇒ <code>function</code>
-<p>Flow pipes all methods from left to right
-The return value of first(left) method will be injected
-into the arguments of next(right) method.</p>
-
-**Kind**: global function  
-**Returns**: <code>function</code> - <p>Returns a function which takes any argument</p>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| ...fns | <code>Array.&lt;function()&gt;</code> | <p>one or more functions as arguments to apply composedly</p> |
-
-**Example**  
-```js
-// Suppose you want to get Grand Total of a cart after Tax and Discount.var getGrandTotal = flow(add, Math.round);// grandTotal = subTotalCart + Vat + Gst - Discountvar grandTotal = getGrandTotal(subTotalCart, VAT(subTotalCart), GST(subTotalCart),negative(Discount(subTotalCart)));// Suppose for no EU customer the Vat does not applyvar nonUsGrandTotal = getGrandTotal(subTotalCart, GST(subTotalCart),negative(Discount(subTotalCart)))
-```
 <a name="update"></a>
 
 ## update(obj, prop, mapFn, val) ⇒ <code>T</code>
@@ -338,42 +468,6 @@ For example it can be used to apply tax on an accessory of an item in a cart.</p
 **Example**  
 ```js
 // Source Objectvar a = {"a": 1, "b": {"c": 2, d: {e: 10}}};// Applying mapping as multiplication function// const mul = (x,y) => x*y;update_in(a, ["b", "d", "e"], mul, 0.9) // => {"a": 1, "b": {"c": 2, d: {e: 9}}}
-```
-<a name="merge_with"></a>
-
-## merge\_with(fn) ⇒ <code>Object</code>
-<p>Merges Multiple Objects into one final Object with applied maping method</p>
-
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| fn | <code>function</code> | 
-
-**Example**  
-```js
-merge_with(add, {"a": 1, "b": 2}, {"b": 2}) => {"a": 1, "b": 4}
-```
-**Example**  
-```js
-merge_with(sub, {"a": 1, "b": 2}, {"b": 2}) => {"a": 1, "b": 0}// Similar to zipWith() for arrays
-```
-<a name="memoize"></a>
-
-## memoize(fn) ⇒ <code>function</code>
-<p>Memoize a funtion based on its arguments</p>
-
-**Kind**: global function  
-**Summary**: <p>Memoization requires that the passed function should be a pure-function</p>  
-**Returns**: <code>function</code> - <p>return a reusable function</p>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| fn | <code>function</code> | <p>Pure Function</p> |
-
-**Example**  
-```js
-const summemo = memoize(add);const submemo = memoize(sub);summemo(4,6); // Computes 4 + 6 => 10submemo(4,6); // Computes 4 - 6 => -2summemo(4,6); // Does not compute, rather return from cash => 10submemo(4,6); // Does not compute, rather return from cash => -2
 ```
 ## Heads Up
 Its personal level excercise, I tried to use vanilla to show values on Browser in a very weired manner.
