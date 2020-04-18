@@ -63,8 +63,8 @@ export function memoize(fn: (...args: any) => any): (...args: any) => void {
  * var nonUsGrandTotal = getGrandTotal(subTotalCart, GST(subTotalCart),negative(Discount(subTotalCart)))
  *
  * @export
- * @param {Array<(...args: any) => any>} fns one or more functions as arguments to apply composedly
- * @returns {(...args: any) => any} Returns a function which takes any argument
+ * @param {Array<Function>} fns one or more functions as arguments to apply composedly
+ * @returns {Function} Returns a function which takes any argument
  */
 export function compose(...fns: Array<(...args: any) => any>): any {
   return (...args) =>

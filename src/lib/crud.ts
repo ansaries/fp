@@ -15,7 +15,7 @@ import { add, mul, div, sub } from './arithmatics';
  * @template T Can be applied to Object of type any
  * @param {T} obj Souce Object of Type T
  * @param {string} prop property name string
- * @param {(...args: any) => any} mapFn Mapping Function
+ * @param {Function} mapFn Mapping Function
  * @param {*} val Assigning value
  * @returns {T} Same object with value of destination key updated using maping function.
  */
@@ -44,7 +44,7 @@ export function update<T>(
  * @template T Can be applied to Object of type any
  * @param {T} obj Souce Object of Type T
  * @param {Array<string>} propMap Array of strings representing the property depth
- * @param {(...args: any) => any} mapFn Mapping Function
+ * @param {Function} mapFn Mapping Function
  * @param {*} val Assigning value
  * @returns {T} Same object with value of destination key updated using maping function.
  */
