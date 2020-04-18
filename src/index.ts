@@ -1,4 +1,4 @@
-import './lib/array';
+import './lib/prototypings';
 import { zipDic, zipMapWith, clist } from './lib/collections';
 import { sub, add, mul, addArgs, subArgs } from './lib/arithmatics';
 import { update, update_in } from './lib/crud';
@@ -24,7 +24,7 @@ const mlist = {
 };
 
 // Partial Application Method
-const method = x => (...args) => mlist[x](...args);
+const method = (x: string | number) => (...args: any) => mlist[x](...args);
 
 // console.log(method(4)(
 //     addArgs,
@@ -42,25 +42,25 @@ const method = x => (...args) => mlist[x](...args);
 // console.log(allOk(isPositive, isEven)(7));
 // console.log(frequencies([1,2,2,3,3,3,4]));
 
-const h1 = str => `<h1>${str}</h1>`;
-const h2 = str => `<h2>${str}</h2>`;
-const h3 = str => `<h3>${str}</h3>`;
-const p = str => `<p>${str}</p>`;
+const h1 = (str: any) => `<h1>${str}</h1>`;
+const h2 = (str: string) => `<h2>${str}</h2>`;
+const h3 = (str: string) => `<h3>${str}</h3>`;
+const p = (str: string) => `<p>${str}</p>`;
 
-const concatPrintValues = (x, y) => {
-  if (typeof x != 'string') x = JSON.stringify(x);
-  if (typeof y != 'string') y = JSON.stringify(y);
+const concatPrintValues = (x: string, y: string) => {
+  if (typeof x !== 'string') x = JSON.stringify(x);
+  if (typeof y !== 'string') y = JSON.stringify(y);
 
   return x + y;
 };
 
-const Print = (...args) =>
+const Print = (...args: (string | object | any[] | unknown[])[]) =>
   (document.getElementById('out').innerHTML +=
     args.reduce(concatPrintValues) + '<br>');
 
 Print(h2('Merge With'), merge_with(add)({ a: 1, b: 2 }, { b: 3, c: 12 }));
 
-var a = { a: 1, b: { c: 2, d: { e: 10 } } };
+const a = { a: 1, b: { c: 2, d: { e: 10 } } };
 Print(
   h2('Update In'),
   '<strong> var a = {a: 1, b: {c: 2, d: {e: 10}}} </strong>',
@@ -103,7 +103,7 @@ let VAT = getTax(5);
 let GST = getTax(17);
 
 const subTotal = zipMapWith(sumOfPrice, 0);
-let subTotalCart = subTotal(cart);
+const subTotalCart = subTotal(cart);
 
 Print('<strong>Sub Total -- ', flow(Math.round)(subTotalCart), '</strong>');
 Print('VAT Tax -- ', flow(VAT, Math.round)(subTotalCart));
@@ -124,21 +124,18 @@ export const coupon = {
     {
       on: 'type',
       value: 'prime',
-      amount: 50,
-      condition: (x, y) => {
-        return x < y;
-      }
+      amount: 50
     }
   ]
 };
 
-const updatedCart: Array<any> = coupon.items.reduce((p, c) => {
-  let applyPercentDiscount = c.amount
+const updatedCart: Array<any> = coupon.items.reduce((_p, c) => {
+  const applyPercentDiscount = c.amount
     ? applyDiscount(c.amount, sub)
     : applyDiscount(c.percent / 10, mul);
 
-  let applyOnCategory = applyPercentDiscount(c.on, c.value);
-  return applyOnCategory(p);
+  const applyOnCategory = applyPercentDiscount(c.on, c.value);
+  return applyOnCategory(_p);
   // applyDiscount(1 - c.percent / 100, mul)(c.on, c.value)(p), cart
 }, cart);
 VAT = getTax(5);
@@ -148,7 +145,7 @@ const discountTotal = subTotalCart - subTotalDiscountedCart;
 
 Print(h3('Discounted Cart as per coupon'), updatedCart);
 Print(
-  '<strong>Sub Total -- ',
+  '<strong>Sub Total: ',
   flow(Math.round)(subTotalDiscountedCart),
   '</strong>'
 );
@@ -156,7 +153,7 @@ Print('VAT Tax -- ', flow(VAT, Math.round)(subTotalDiscountedCart));
 Print('GST Tax -- ', flow(GST, Math.round)(subTotalDiscountedCart));
 Print('Total Discount -- ', flow(Math.round)(discountTotal));
 Print(
-  '<strong style="font-size:20px"> Total -- ',
+  '<strong style="font-size:20px"> Total:',
   flow(addArgs, Math.round)(
     subTotalDiscountedCart,
     VAT(subTotalDiscountedCart),

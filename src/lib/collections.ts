@@ -7,7 +7,7 @@
  * @param {...any} args Arguments of type any
  * @returns {Array<any>} Return an Array of type any
  */
-export function clist(...args: any): Array<any> {
+export function clist(...args: any): [] {
   return args;
 }
 
@@ -20,7 +20,7 @@ export function clist(...args: any): Array<any> {
  * @param {Array<any>} ar
  * @returns {Array<T>}
  */
-export function take<T>(x: number, ar: Array<any>): Array<T> {
+export function take<T>(x: number, ar: []): Array<T> {
   return ar.slice(0, x);
 }
 
@@ -32,12 +32,12 @@ export function take<T>(x: number, ar: Array<any>): Array<T> {
  * @param {number} N
  * @returns {Array<number>}
  */
-export function range(N: number): Array<number> {
+export function range(N: number): number[] {
   return Array.from({ length: N }, (v, k) => k + 1);
 }
 
 const validateArrayandApply = fn => x =>
-  typeof x == 'string' ? fn(Array.from(x)) : !!x.length ? fn(x) : fn([x]);
+  typeof x === 'string' ? fn(Array.from(x)) : !!x.length ? fn(x) : fn([x]);
 
 /**
  *  Takes a sequence and counts how many times the elements appear in the sequence, returns a map.
@@ -48,7 +48,7 @@ const validateArrayandApply = fn => x =>
  * @export
  * @returns {Function}
  */
-export function frequencies(): Function {
+export function frequencies(): (x: any) => any {
   return validateArrayandApply(x =>
     x.reduce((p, v) => {
       p[v] = p[v] || 0;
@@ -154,7 +154,7 @@ export function zip(...args) {
       // [1,2,3] => [[1],[2],[3]]
       return c.reduce((cp, cc) => cp.pushItem([cc]), []);
     // [[1],[2],[3]] => [[1,4,...], [2,5,...],[3,6,...]]
-    else return p.map((x, i) => x.pushItem(c[i]));
+    else return p.map((x, u) => x.pushItem(c[u]));
   }, []);
 }
 
@@ -222,7 +222,7 @@ export function zipWith(fn: (x: any, y: any) => any) {
  * @returns {*}
  */
 export function zipMapWith(fn: (x: any, y: any) => any, initialValue): any {
-  return (arr: Array<Object>): any =>
+  return (arr: Array<object>): any =>
     arr.reduce((p, c) => fn(p, c), initialValue);
 }
 
@@ -238,7 +238,7 @@ export function zipMapWith(fn: (x: any, y: any) => any, initialValue): any {
  * @param {Array<any>} right
  * @returns {Object}
  */
-export function zipDic(left: Array<string>, right: Array<any>): Object {
+export function zipDic(left: Array<string>, right: Array<any>): object {
   // Pure Functional
   return left.reduce((p, c, i) => {
     p[c] = right[i];
@@ -269,8 +269,8 @@ export function zipMap(
   right: Array<any>,
   mapFn: (x: any, y: any, index: number) => Array<any>
 ) {
-  var counter,
-    results = [];
+  let counter;
+  const results = [];
 
   for (counter = 0; counter < Math.min(left.length, right.length); counter++) {
     results.push(mapFn(left[counter], right[counter], counter));

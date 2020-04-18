@@ -14,12 +14,12 @@ function isPrime(item) {
   return item.type === 'prime';
 }
 
-export function primeItems(cart) {
-  return cart.filter(isPrime);
+export function primeItems(_cart) {
+  return _cart.filter(isPrime);
 }
 
-export function noPrimeItems(cart: Array<any>) {
-  return cart.reject(isPrime);
+export function noPrimeItems(_cart: Array<any>) {
+  return _cart.reject(isPrime);
 }
 
 /**
@@ -30,11 +30,14 @@ export function noPrimeItems(cart: Array<any>) {
  * @param {Function} fn
  * @returns
  */
-export function applyDiscount(discount: number, fn: Function) {
-  return (prop, value) => (cart: Array<any>) =>
-    cart.reduce(
+export function applyDiscount(
+  discount: number,
+  fn: (c: { price: number }, discount: number) => void
+) {
+  return (prop, value) => (_cart: Array<any>) =>
+    _cart.reduce(
       (p, c) =>
-        c[prop] == value
+        c[prop] === value
           ? p.pushItem(Object.assign({}, c, { price: fn(c.price, discount) }))
           : p.pushItem(c),
       []

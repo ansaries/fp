@@ -1,5 +1,4 @@
-import { add, sub } from "./arithmatics";
-
+import { add, sub } from './arithmatics';
 
 /**
  * Merges Multiple Objects into one final Object with applied maping method
@@ -10,20 +9,18 @@ import { add, sub } from "./arithmatics";
  * @param {Function} fn
  * @returns { Object }
  */
-export function merge_with(fn: Function) {
-    return (...args) => {
-        return args.reduce((p, c) => {
-            for (let key in c) {
-                p[key] = fn(p[key] || 0, c[key]);
-            }
-            return p;
-        });
-    }
+export function merge_with(fn: (x, y) => any) {
+  return (...args) => {
+    return args.reduce((p, c) => {
+      for (const key in c) {
+        if (key) {
+          p[key] = fn(p[key] || 0, c[key]);
+        }
+      }
+      return p;
+    });
+  };
 }
-
-
-
-
 
 /**
  * Memoize a funtion based on its arguments
@@ -40,28 +37,23 @@ export function merge_with(fn: Function) {
  * @param {Function} fn Pure Function
  * @returns {Function} return a reusable function
  */
-export function memoize(fn: Function):Function {
-    const cash = {};
-    return (...args) => {
-        const cashKey = `key-${JSON.stringify(args)}`;
-        if(cash[cashKey]) {
-            return cash[cashKey];
-        }
-        const val = fn(...args);
-        cash[cashKey] = val;
-        return val;
-    };
+export function memoize(fn: (...args: any) => any): (...args: any) => void {
+  const cash = {};
+  return (...args) => {
+    const cashKey = `key-${JSON.stringify(args)}`;
+    if (cash[cashKey]) {
+      return cash[cashKey];
+    }
+    const val = fn(...args);
+    cash[cashKey] = val;
+    return val;
+  };
 }
-
-
-
-
-
 
 /**
  * Compose pipes all methods from right to left
- * The return value of last(right) method will be injected 
- * into the arguments of next(left) method. 
+ * The return value of last(right) method will be injected
+ * into the arguments of next(left) method.
  * @example
  * // Suppose you want to get Grand Total of a cart after Tax and Discount.
  * var getGrandTotal = compose(Math.round, add);
@@ -69,18 +61,19 @@ export function memoize(fn: Function):Function {
  * var grandTotal = getGrandTotal(subTotalCart, VAT(subTotalCart), GST(subTotalCart),negative(Discount(subTotalCart)));
  * // Suppose for no EU customer the Vat does not apply
  * var nonUsGrandTotal = getGrandTotal(subTotalCart, GST(subTotalCart),negative(Discount(subTotalCart)))
- * 
+ *
  * @export
- * @param {Array<Function>} fns one or more functions as arguments to apply composedly
- * @returns {Function} Returns a function which takes any argument
+ * @param {Array<(...args: any) => any>} fns one or more functions as arguments to apply composedly
+ * @returns {(...args: any) => any} Returns a function which takes any argument
  */
-export function compose(...fns: Array<Function>): any { 
-     return (...args) => fns.reduceRight((p,c) => p.length ? c(...p) : c(p), args);
+export function compose(...fns: Array<(...args: any) => any>): any {
+  return (...args) =>
+    fns.reduceRight((p, c) => (p.length ? c(...p) : c(p)), args);
 }
 
 /**
  * Flow pipes all methods from left to right
- * The return value of first(left) method will be injected 
+ * The return value of first(left) method will be injected
  * into the arguments of next(right) method.
  * @example
  * // Suppose you want to get Grand Total of a cart after Tax and Discount.
@@ -89,11 +82,13 @@ export function compose(...fns: Array<Function>): any {
  * var grandTotal = getGrandTotal(subTotalCart, VAT(subTotalCart), GST(subTotalCart),negative(Discount(subTotalCart)));
  * // Suppose for no EU customer the Vat does not apply
  * var nonUsGrandTotal = getGrandTotal(subTotalCart, GST(subTotalCart),negative(Discount(subTotalCart)))
- * 
+ *
  * @export
  * @param {Array<Function>} fns one or more functions as arguments to apply composedly
  * @returns {Function} Returns a function which takes any argument
  */
-export function flow (...fns: Array<Function>): (...args) => any {
-    return (...args) => fns.reduce((p,c) => p.length ? c(...p): c(p), args);
+export function flow(
+  ...fns: Array<(...args: any) => any>
+): (...args: any) => any {
+  return (...args) => fns.reduce((p, c) => (p.length ? c(...p) : c(p)), args);
 }

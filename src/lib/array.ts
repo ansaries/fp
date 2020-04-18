@@ -31,7 +31,7 @@ function concatAll() {
  * @returns {Array<T>}
  */
 
-function concatMap(fn: Function) {
+function concatMap(fn: (...args: any) => any) {
   return this.concatAll().map(fn);
 }
 
@@ -106,7 +106,7 @@ function reject(mapFn: (x: any, i?: number) => boolean) {
   // return this.filter(x => !mapFn(x));
 }
 
-const arrayProto = {
+export const Arrays = {
   pushItem,
   concatAll,
   concatMap,
@@ -118,7 +118,3 @@ const arrayProto = {
   insert,
   reject
 };
-
-for (var key in arrayProto) {
-  Array.prototype[key] = arrayProto[key];
-}

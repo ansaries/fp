@@ -1,0 +1,11 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended"],
+  "jsRules": {},
+  "rules": {
+    "no-extra-boolean-cast": true,
+    "triple-equals": [true, "allow-undefined-check"],
+    "array-type": false
+  },
+  "rulesDirectory": []
+}
